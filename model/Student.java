@@ -1,5 +1,7 @@
 package model;
 
+import exception.InvalidMarksException;
+
 public class Student {
 
     public int id;
@@ -7,7 +9,6 @@ public class Student {
     public int age;
     public int[] marks;
 
-    // Constructor
     public Student(int id, String name, int age, int[] marks) {
         this.id = id;
         this.name = name;
@@ -15,48 +16,47 @@ public class Student {
         this.marks = marks;
     }
 
-    // Calculate total
-    public int calculateTotal() {
+    public int calculateTotal() throws InvalidMarksException {
 
         int total = 0;
 
         for (int mark : marks) {
+
+            if (mark < 0 || mark > 100) {
+                throw new InvalidMarksException(
+                        "Invalid mark: " + mark
+                );
+            }
+
             total += mark;
         }
 
         return total;
     }
 
-    // Calculate average
-    public double calculateAverage() {
+    public double calculateAverage() throws InvalidMarksException {
 
         return calculateTotal() / (double) marks.length;
     }
 
-    // Calculate grade
-    public char calculateGrade() {
+    public char calculateGrade() throws InvalidMarksException {
 
         double average = calculateAverage();
 
         if (average >= 90) {
             return 'A';
-        } 
-        else if (average >= 75) {
+        } else if (average >= 75) {
             return 'B';
-        } 
-        else if (average >= 60) {
+        } else if (average >= 60) {
             return 'C';
-        } 
-        else if (average >= 40) {
+        } else if (average >= 40) {
             return 'D';
-        } 
-        else {
+        } else {
             return 'F';
         }
     }
 
-    // Check result
-    public boolean isPassed() {
+    public boolean isPassed() throws InvalidMarksException {
 
         return calculateAverage() >= 40;
     }
